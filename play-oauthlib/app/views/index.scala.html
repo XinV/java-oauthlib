@@ -1,7 +1,17 @@
-@(message: String)
-
-@main("Welcome to Play") {
-
-    @play20.welcome(message, style = "Java")
-
+@(message: String, user: models.User)
+@main("Home Page") {
+	<div class='span8'>
+		@if(user != null ){
+			<h3>Hello, user @user.email</h3>
+		}else{
+			<h3>Please Login first</h3>
+			<form action="/" method="POST">
+				<input type="text" name="email" placeholder="your email " />
+				<input type="password" name="passwd" placeholder="your passwd" />
+				
+				<input type='submit' value="Login" />
+			</form>
+		}
+		Message is @message .
+	</div>
 }
