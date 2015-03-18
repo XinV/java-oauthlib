@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import models.User;
 import play.*;
 import play.mvc.*;
@@ -13,6 +15,8 @@ public class Application extends Controller {
     }
     
     public static Result db(){
+    	List<User> users = User.findAll();
+    	
     	return ok();
     }
 

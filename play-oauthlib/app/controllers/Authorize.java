@@ -22,21 +22,21 @@ public class Authorize extends Controller{
 			Map<String, String[]> form_values = request().body().asFormUrlEncoded();
 			String email = form_values.get("email")[0];
 			String passwd = form_values.get("passwd")[0];
-
-			User u = new User();
-			u.email = email;
-			u.passwd = passwd;
 			
-			session("user", email);
+			User user = User.findByEmail(email);
 			
-			return ok(index.render("Home page ", u));
+			if(user != null){
+				session("user", String.valueOf(user.id));
+			}
+			
+			return ok(index.render("Home page ", user));
 		}
 		
 		User user = null;
 		if(session().containsKey("user")){
 			//session中存在用户，获取用户信息
 			int userId = Integer.parseInt(session().get("user"));
-			user = new User();
+			user = User.findById(userId);
 		}
 		
 		return ok(index.render("Home page", user));
