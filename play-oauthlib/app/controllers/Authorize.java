@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import models.User;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -42,7 +44,7 @@ public class Authorize extends Controller{
 	
 	/**
 	 * 确认认证页面
-	 * 
+	 * 用户点击是否确认认证
 	 * */
 	public static Result authorize(){
 		if(!session().containsKey("user")){
@@ -97,7 +99,10 @@ public class Authorize extends Controller{
 		String client_id = request().getQueryString("client_id");
 		String client_secret = request().getQueryString("client_secret");
 		
-		return ok();
+		
+		response().setContentType("appliction/json");
+		JsonNode jn;
+		return ok("");
 	}
 	
 	/**
