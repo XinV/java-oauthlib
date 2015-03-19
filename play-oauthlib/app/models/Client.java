@@ -21,11 +21,11 @@ public class Client extends Model{
 	public static Finder<Integer, Client> find = new Finder<Integer, Client>(
 			Integer.class, Client.class);
 	
-	public Client findById(String clientId){
+	public static Client findById(String clientId){
 		return find.where().eq("clientId", clientId).findUnique();
 	}
 	
-	public Client findByName(String name){
+	public static Client findByName(String name){
 		return find.where().eq("clientName", name).findUnique();
 	}
 }

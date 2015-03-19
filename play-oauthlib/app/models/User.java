@@ -18,11 +18,15 @@ public class User extends Model {
 	public static Finder<Integer, User> find = new Finder<Integer, User>(
 			Integer.class, User.class);
 	
-	public List<User> findAll(){
+	public static List<User> findAll(){
 		return find.all();
 	}
 	
-	public User findByEmail(String email){
+	public static User findByEmail(String email){
 		return find.where().eq("email", email).findUnique();
+	}
+	
+	public static User findById(int id){
+		return find.byId(id);
 	}
 }
