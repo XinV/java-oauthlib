@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -116,7 +117,7 @@ public class Authorize extends Controller{
 	 * */
 	public static Result token(){
 		//根据oauth2协议，必须参数
-		//grant_type
+		//grant_type 默认 authorization_code
 		//client_id
 		//client_srcret
 		//code
@@ -138,33 +139,46 @@ public class Authorize extends Controller{
 		}
 		
 		//检查是否已经超过expires		
-		if(now.before(grant.expires)){
+		System.out.println(grant.expires);
+		if(!now.before(grant.expires)){
 			//超过过期时间
 			return ok("expires， re-ensure aggin");
 		}
 		
 		//生成一个token
 		Token token = new Token();
-		token.cliendId = clientId;
-		token.userId = Integer.parseInt(session().get("userId"));
+		token.clientId = clientId;
+		token.userId = Integer.parseInt(session().get("user"));
 		token.scope = grant.scope;
 		token.tokenType = "Bearer";
 		
 		Date expires = new Date();
-		expires.setTime(expires.getTime()/1000 + 60 * 60 * 24 * 30);
+		expires.setTime((expires.getTime()/1000 + 60 * 60 * 24 * 30)*1000);
 		
 		token.expires = expires;
 		
-		String access_token = "";
-		String refresh_token = "";
+		String accessToken = AuthorizeUtil.generateRandomString(41);
+		String refreshToken = AuthorizeUtil.generateRandomString(45);
+		
+		token.accessToken = accessToken;
+		token.refreshToken = refreshToken;
+		
+		//删除之前存在的token
+		List<Token> tokenBefore = Token.findByClientAndUser(clientId, token.userId);
+		
+		for(Token t: tokenBefore){
+			t.delete();
+		}
 		
 		//保存token
-		token.save();		
+		token.save();
 		
-		response().setContentType("appliction/json");
+		//删除grant
+		grant.delete();
+		
 		ObjectNode token_return = Json.newObject();
-		token_return.put("access_token", access_token);
-		token_return.put("refresh_token", refresh_token);
+		token_return.put("access_token", accessToken);
+		token_return.put("refresh_token", refreshToken);
 		
 		return ok(token_return);
 	}
@@ -173,6 +187,7 @@ public class Authorize extends Controller{
 	 * 测试api接口
 	 * */
 	public static Result apiUser(){
+		String token = request().headers().get("Authorization")[0].split(" ")[1];
 		return ok();
 	}
 }
