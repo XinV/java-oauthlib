@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,7 +16,7 @@ public class Token extends Model {
 	public int id;
 	
 	@Constraints.Required
-	public String cliendId;
+	public String clientId;
 	
 	@Constraints.Required
 	public int userId;
@@ -41,5 +42,9 @@ public class Token extends Model {
 	
 	public static Token findByUserId(int userId){
 		return find.where().eq("userId", userId).findUnique();
+	}
+	
+	public static List<Token> findByClientAndUser(String clientId, int userId){
+		return find.where().eq("clientId", clientId).eq("userId", userId).findList();
 	}
 }
