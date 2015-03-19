@@ -5,12 +5,14 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import play.data.format.*;
 import play.db.ebean.Model;
 import play.data.validation.*;
 
 @Entity
+@Table(name="oauth_grant")
 public class Grant extends Model {
 	@Id
 	public int id;
