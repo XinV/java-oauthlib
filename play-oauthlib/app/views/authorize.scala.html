@@ -1,5 +1,28 @@
-@(user: models.User)
+@(user: models.User, clientId: String, responseType: String, redirectUri: String, scope: String)
 
-@main("Authorize"){
+@morecss = {
+<style>
+	.confirm-div {
+		margin-left: 40%;
+		margin-top: 5%;
+	}
+</style>
+}
 
+@main("Authorize", morecss){
+	<div class='container span12'>
+		<div class='span8 confirm-div'>
+		<p> Client Id: @clientId</p>
+		<p>User: @user.email</p>
+		
+		<form action='/authorize' method="POST">
+			<input class='hidden' type="text" name="client_id" value="@clientId">
+			<input class='hidden' type="text" name="response_type" value="@responseType">
+			<input class='hidden' type="text" name="redirect_uri" value="@redirectUri">
+			<input class='hidden' type="text" name="scope" value="@scope">		
+			<input class='hidden' type="text" name="yes" value="yes">
+			<button class='btn btn-primary button' type="submit" >Confirm</button>
+		</form>
+		</div>
+	</div>
 }

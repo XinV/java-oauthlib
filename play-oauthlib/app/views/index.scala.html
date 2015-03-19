@@ -1,15 +1,18 @@
 @(message: String, user: models.User)
-@main("Home Page") {
+
+@morecss = {}
+
+@main("Home Page",morecss){
 	<div class='span8'>
 		@if(user != null ){
 			<h3>Hello, user @user.email</h3>
 		}else{
 			<h3>Please Login first</h3>
 			<form action="/" method="POST">
-				<input type="text" name="email" placeholder="your email " />
-				<input type="password" name="passwd" placeholder="your passwd" />
+				<input class='form-control' type="text" name="email" placeholder="your email " />
+				<input class='form-control' type="password" name="passwd" placeholder="your passwd" />
 				
-				<input type='submit' value="Login" />
+				<button class='btn button btn-primary' type='submit'>Login</button>
 			</form>
 		}
 		Message is @message .
