@@ -94,12 +94,16 @@ public class Authorize extends Controller{
 		//根据oauth2 协议，必须参数包括 
 		//response_type
 		//client_id
+		//可选&推荐参数包括
 		//redirect_uri
 		//scope
+		//state
 		String responseType = request().getQueryString("response_type");
 		String clientId = request().getQueryString("client_id");
+		
 		String redirectUri = request().getQueryString("redirect_uri");
 		String scope = request().getQueryString("scope");
+		String state = request().getQueryString("state");
 		
 		if(!AuthorizeUtil.check_redirect_uri(clientId, redirectUri)){
 			//校验回调uri，不对则跳转
@@ -119,8 +123,9 @@ public class Authorize extends Controller{
 		//根据oauth2协议，必须参数
 		//grant_type 默认 authorization_code
 		//client_id
-		//client_srcret
 		//code
+		//可选参数
+		//client_srcret
 		//redirect_uri
 		String grantType = request().getQueryString("grant_type");
 		String clientId = request().getQueryString("client_id");
@@ -187,7 +192,27 @@ public class Authorize extends Controller{
 	 * 测试api接口
 	 * */
 	public static Result apiUser(){
-		String token = request().headers().get("Authorization")[0].split(" ")[1];
-		return ok();
+		String accessToken = request().headers().get("Authorization")[0].split(" ")[1];
+		
+		//判断token是否有效
+		Token token = Token.findByAccessToken(accessToken);
+		
+		if(token != null){
+			//判断是否过期
+			Date expires = token.expires;
+			if(new Date().after(expires)){
+				return ok("sorry, token has expired");
+			}
+			
+			int userId = token.userId;
+			
+			User user = User.findById(userId);
+			
+			ObjectNode userInfo = Json.newObject();
+			userInfo.put("email", user.email);
+			
+			return ok(userInfo);
+		}
+		return ok("sorry, token not right");
 	}
 }

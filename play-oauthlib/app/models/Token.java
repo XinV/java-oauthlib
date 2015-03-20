@@ -47,4 +47,12 @@ public class Token extends Model {
 	public static List<Token> findByClientAndUser(String clientId, int userId){
 		return find.where().eq("clientId", clientId).eq("userId", userId).findList();
 	}
+	
+	public static Token findByAccessToken(String accessToken){
+		return find.where().eq("accessToken", accessToken).findUnique();
+	}
+	
+	public static Token findByRefreshToken(String refreshToken){
+		return find.where().eq("refreshToken", refreshToken).findUnique();
+	}
 }
