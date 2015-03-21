@@ -1,0 +1,53 @@
+
+@morecss = {
+<style>
+	.client-form-wrapper{
+		margin-left: 30%;
+		margin-right: 30%;
+		margin-top: 5%;
+	}
+</style>
+
+<script>
+function checkUri(){
+	var redirectUri = $("#client_uri").value;
+	
+	console.log(redirectUri);
+	
+	//var redirect_uri_reg = /^http(s)?://；
+	
+}
+</script>
+}
+
+@main("Create Client", morecss){
+	<div class="container span12">
+		<div class='client-form-wrapper'>
+			<h3>申请一个Client</h3>
+			<hr style="border-top:1px solid #aaa;">
+			<form role="form" action='/client' method='post'>
+				<div class='row'>
+					<div class='form-group col-md-12'>
+						<label for="code" class="col-md-2">Name: </label>
+						<div class="col-md-8">
+						<input type="text" class="form-control" name="client_name"/>
+						</div>
+					</div>
+				</div>
+				<div class='row'>
+					<div class='form-group col-md-12'>
+						<label for="code" class="col-md-2">Uri: </label>
+						<div class="col-md-8">
+						<input id="client_uri" type="text" class="form-control" name="client_uri" onblur="javascript:checkUri()"/>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+					<button type="submit" class='btn btn-primary button'>申请</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+}

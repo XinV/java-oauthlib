@@ -6,6 +6,10 @@
 GET     /                           controllers.Authorize.index()
 POST    /							controllers.Authorize.index()
 
+#apply client
+GET		/client						controllers.Common.client()
+POST 	/client						controllers.Common.client()
+
 #authorize page
 GET		/authorize 					controllers.Authorize.authorize()
 POST	/authorize					controllers.Authorize.authorize()
